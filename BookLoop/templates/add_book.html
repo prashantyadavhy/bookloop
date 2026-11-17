@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Add a book | BookLoop{% endblock %}
+{% block content %}
+<section class="form-page wide-form-page">
+    <div class="form-intro"><p class="eyebrow">Share a book</p><h1>Add a book listing</h1><p>Enter clear details so another student can find the right book.</p></div>
+    <form class="form-card form-grid" method="post">
+        <label>Book name<input type="text" name="book_name" required maxlength="150" value="{{ request.form.get('book_name', '') }}"></label>
+        <label>Author name<input type="text" name="author" required maxlength="100" value="{{ request.form.get('author', '') }}"></label>
+        <label>Subject<input type="text" name="subject" required maxlength="80" placeholder="For example, Physics"></label>
+        <label>Class<input type="text" name="book_class" required placeholder="For example, 12"></label>
+        <label>Original price (₹)<input type="number" name="original_price" required min="0" step="0.01"></label>
+        <label>Book condition<select name="book_condition" required><option value="">Choose condition</option><option>New</option><option>Good</option><option>Used</option></select></label>
+        <label class="full-width">Exchange type<select name="exchange_type" required><option value="">Choose one</option><option>Exchange</option><option>Free Donation</option></select></label>
+        <div class="full-width"><button class="button" type="submit">Save book listing</button></div>
+    </form>
+</section>
+{% endblock %}

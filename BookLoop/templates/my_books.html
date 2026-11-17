@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}My books | BookLoop{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Your listings</p><h1>My books</h1><p>Books you have added to BookLoop.</p></div><a class="button" href="{{ url_for('add_book') }}">＋ Add a book</a></section>
+{% if books %}<div class="book-grid">
+{% for book in books %}<article class="book-card"><img class="book-cover" src="{{ url_for('static', filename='images/default-book.svg') }}" alt="Default book cover"><div class="book-info"><span class="tag tag-{{ book.status|lower }}">{{ book.status }}</span><h3>{{ book.book_name }}</h3><p class="muted">by {{ book.author }}</p><p>{{ book.subject }} · Class {{ book.book_class }}</p><p class="small-line">{{ book.book_condition }} · {{ book.exchange_type }}</p></div></article>{% endfor %}
+</div>{% else %}<div class="empty-panel"><h3>You have not listed a book yet</h3><p>Add a book to help another student find it.</p><a class="button button-small" href="{{ url_for('add_book') }}">Add a book</a></div>{% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Requests | BookLoop{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Exchange activity</p><h1>Book requests</h1><p>Review incoming requests and follow the requests you have made.</p></div></section>
+<div class="request-columns">
+    <section class="panel"><div class="panel-heading"><div><h2>Incoming requests</h2><p>Requests for books you listed</p></div></div>
+        {% if incoming_requests %}{% for item in incoming_requests %}
+        <article class="request-card"><div class="request-top"><span class="status-pill status-{{ item.request_status|lower }}">{{ item.request_status }}</span><span class="muted">Request #{{ item.request_id }}</span></div><h3>{{ item.book_name }}</h3><p>Requested by <strong>{{ item.requester_name }}</strong> · {{ item.exchange_type }}</p>
+            {% if item.request_status == 'Pending' %}<div class="button-row compact-row"><form method="post" action="{{ url_for('update_request', request_id=item.request_id, action='accept') }}"><button class="button button-small" type="submit">Accept</button></form><form method="post" action="{{ url_for('update_request', request_id=item.request_id, action='reject') }}"><button class="button button-light button-small" type="submit">Reject</button></form><form method="post" action="{{ url_for('open_whatsapp') }}"><input type="hidden" name="action" value="request"><input type="hidden" name="request_id" value="{{ item.request_id }}"><button class="button button-light button-small" type="submit">WhatsApp request update</button></form></div>
+            {% elif item.request_status == 'Accepted' %}<p class="small-line">The book is reserved. Coordinate and mark the handover after it happens.</p><div class="button-row compact-row"><form method="post" action="{{ url_for('open_whatsapp') }}"><input type="hidden" name="action" value="accept"><input type="hidden" name="request_id" value="{{ item.request_id }}"><button class="button button-small" type="submit">Send acceptance on WhatsApp</button></form><form method="post" action="{{ url_for('open_whatsapp') }}"><input type="hidden" name="action" value="coordinate"><input type="hidden" name="request_id" value="{{ item.request_id }}"><button class="button button-light button-small" type="submit">Coordinate exchange</button></form></div><form method="post" action="{{ url_for('complete_exchange', request_id=item.request_id) }}"><button class="text-button" type="submit">Mark exchange completed</button></form>
+            {% elif item.request_status == 'Rejected' %}<form method="post" action="{{ url_for('open_whatsapp') }}"><input type="hidden" name="action" value="reject"><input type="hidden" name="request_id" value="{{ item.request_id }}"><button class="button button-light button-small" type="submit">Message requester on WhatsApp</button></form>
+            {% else %}<p class="small-line">This exchange is complete.</p>{% endif %}
+        </article>{% endfor %}{% else %}<p class="empty-inline">No one has requested your books yet.</p>{% endif %}
+    </section>
+
+    <section class="panel"><div class="panel-heading"><div><h2>Outgoing requests</h2><p>Books you asked for</p></div></div>
+        {% if outgoing_requests %}{% for item in outgoing_requests %}
+        <article class="request-card"><div class="request-top"><span class="status-pill status-{{ item.request_status|lower }}">{{ item.request_status }}</span><span class="muted">Request #{{ item.request_id }}</span></div><h3>{{ item.book_name }}</h3><p>Book owner: <strong>{{ item.owner_name }}</strong> · {{ item.exchange_type }}</p>
+            {% if item.request_status == 'Pending' %}<form method="post" action="{{ url_for('open_whatsapp') }}"><input type="hidden" name="action" value="request"><input type="hidden" name="request_id" value="{{ item.request_id }}"><button class="button button-small" type="submit">Message book owner on WhatsApp</button></form>
+            {% elif item.request_status == 'Accepted' %}<p class="small-line">Your request was accepted. Arrange a handover with the owner.</p><div class="button-row compact-row"><form method="post" action="{{ url_for('open_whatsapp') }}"><input type="hidden" name="action" value="coordinate"><input type="hidden" name="request_id" value="{{ item.request_id }}"><button class="button button-small" type="submit">Coordinate on WhatsApp</button></form><form method="post" action="{{ url_for('complete_exchange', request_id=item.request_id) }}"><button class="button button-light button-small" type="submit">Mark exchange completed</button></form></div>
+            {% elif item.request_status == 'Rejected' %}<p class="small-line">This request was rejected or the book became unavailable.</p>
+            {% else %}<p class="small-line">This exchange is complete.</p>{% endif %}
+        </article>{% endfor %}{% else %}<p class="empty-inline">You have not requested a book yet.</p>{% endif %}
+    </section>
+</div>
+{% endblock %}

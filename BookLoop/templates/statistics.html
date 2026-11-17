@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Statistics | BookLoop{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Admin overview</p><h1>BookLoop statistics</h1><p>Simple totals calculated from the MySQL database.</p></div></section>
+<section class="stats-grid admin-stats">
+    <article class="stat-card"><span>Registered students</span><strong>{{ totals.students }}</strong></article>
+    <article class="stat-card"><span>Listed books</span><strong>{{ totals.books }}</strong></article>
+    <article class="stat-card"><span>Completed exchanges</span><strong>{{ totals.exchanges }}</strong></article>
+    <article class="stat-card"><span>Estimated money saved</span><strong>₹{{ '%.2f'|format(totals.money_saved) }}</strong></article>
+    <article class="stat-card"><span>Average listed price</span><strong>₹{{ '%.2f'|format(totals.average_price) }}</strong></article>
+</section>
+<section class="panel chart-panel"><div class="panel-heading"><div><h2>Books by subject and class</h2><p>Charts are created from GROUP BY query results.</p></div></div><img class="statistics-chart" src="{{ url_for('static', filename='images/bookloop_statistics.png') }}?v={{ totals.books }}-{{ totals.exchanges }}" alt="Bar chart of books by subject and pie chart of books by class"></section>
+<section class="two-panels">
+    <div class="panel"><h2>Popular subjects</h2>{% if subject_rows %}<ul class="simple-list">{% for row in subject_rows %}<li><span>{{ row.subject }}</span><strong>{{ row.total }}</strong></li>{% endfor %}</ul>{% else %}<p>No book data yet.</p>{% endif %}</div>
+    <div class="panel"><h2>Books by class</h2>{% if class_rows %}<ul class="simple-list">{% for row in class_rows %}<li><span>Class {{ row.book_class }}</span><strong>{{ row.total }}</strong></li>{% endfor %}</ul>{% else %}<p>No book data yet.</p>{% endif %}</div>
+</section>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}My dashboard | BookLoop{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Student dashboard</p><h1>Hello, {{ session.get('student_name', 'student') }}</h1><p>Here is a quick view of your BookLoop activity.</p></div><a class="button" href="{{ url_for('add_book') }}">＋ Add a book</a></section>
+<section class="stats-grid student-stats">
+    <article class="stat-card"><span>My listed books</span><strong>{{ counts.books }}</strong><a href="{{ url_for('my_books') }}">View my books →</a></article>
+    <article class="stat-card"><span>Incoming requests</span><strong>{{ counts.incoming }}</strong><a href="{{ url_for('requests_page') }}">Review requests →</a></article>
+    <article class="stat-card"><span>Outgoing requests</span><strong>{{ counts.outgoing }}</strong><a href="{{ url_for('requests_page') }}">Track requests →</a></article>
+    <article class="stat-card"><span>Accepted requests</span><strong>{{ counts.accepted }}</strong><a href="{{ url_for('requests_page') }}">Coordinate exchange →</a></article>
+    <article class="stat-card"><span>Completed exchanges</span><strong>{{ counts.completed }}</strong><a href="{{ url_for('requests_page') }}">See completed →</a></article>
+</section>
+<section class="quick-links"><a class="quick-link" href="{{ url_for('browse_books') }}"><span>⌕</span><div><strong>Browse books</strong><small>Find books listed by other students</small></div><b>→</b></a><a class="quick-link" href="{{ url_for('requests_page') }}"><span>↔</span><div><strong>Manage requests</strong><small>Accept, reject or track a request</small></div><b>→</b></a></section>
+{% endblock %}

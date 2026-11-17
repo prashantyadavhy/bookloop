@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 300" role="img" aria-label="BookLoop default book cover">
+  <defs>
+    <linearGradient id="cover" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9bd8f3"/>
+      <stop offset="1" stop-color="#287eb4"/>
+    </linearGradient>
+  </defs>
+  <rect width="220" height="300" rx="18" fill="#e7f4fb"/>
+  <rect x="29" y="25" width="163" height="250" rx="12" fill="url(#cover)"/>
+  <path d="M55 25v250" stroke="#d9f0fb" stroke-width="3" opacity=".8"/>
+  <circle cx="124" cy="99" r="35" fill="#d9f2fc" opacity=".7"/>
+  <path d="M94 99h60M124 69v60" stroke="#287eb4" stroke-width="5" stroke-linecap="round"/>
+  <text x="112" y="174" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700" text-anchor="middle">BOOKLOOP</text>
+  <text x="112" y="201" fill="#e7f7ff" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">SHARE A BOOK</text>
+</svg>

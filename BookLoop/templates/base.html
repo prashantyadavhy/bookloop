@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}BookLoop{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav-wrap">
+            <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">B</span> BookLoop</a>
+            <div class="nav-links">
+                <a href="{{ url_for('browse_books') }}">Browse books</a>
+                {% if session.get('student_id') %}
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('my_books') }}">My books</a>
+                    <a href="{{ url_for('requests_page') }}">Requests</a>
+                    <a class="button button-small" href="{{ url_for('logout') }}">Log out</a>
+                {% elif session.get('admin_id') %}
+                    <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+                    <a href="{{ url_for('statistics') }}">Statistics</a>
+                    <a class="button button-small" href="{{ url_for('logout') }}">Log out</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Log in</a>
+                    <a class="button button-small" href="{{ url_for('register') }}">Join BookLoop</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main class="page-shell">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <span>BookLoop · Student book exchange portal</span>
+            <a href="{{ url_for('admin_login') }}">Admin sign in</a>
+        </div>
+    </footer>
+</body>
+</html>

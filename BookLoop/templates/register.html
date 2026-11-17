@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Create an account | BookLoop{% endblock %}
+{% block content %}
+<section class="form-page">
+    <div class="form-intro"><p class="eyebrow">Join the community</p><h1>Create your student account</h1><p>Your student ID is created automatically when you register.</p></div>
+    <form class="form-card" method="post">
+        <label>Student name<input type="text" name="name" required maxlength="100" value="{{ request.form.get('name', '') }}"></label>
+        <label>Email address<input type="email" name="email" required maxlength="150" value="{{ request.form.get('email', '') }}"></label>
+        <label>Password<input type="password" name="password" required minlength="6"></label>
+        <label>Class<input type="text" name="student_class" required placeholder="For example, 12"></label>
+        <label>WhatsApp number with country code<input type="tel" name="whatsapp_number" required placeholder="919876543210"><small>Only used to contact a student involved in a request. It is not shown publicly.</small></label>
+        <button class="button" type="submit">Create account</button>
+        <p class="form-foot">Already registered? <a href="{{ url_for('login') }}">Log in</a></p>
+    </form>
+</section>
+{% endblock %}

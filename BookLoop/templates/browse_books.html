@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Browse books | BookLoop{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Book catalogue</p><h1>Find your next book</h1><p>Search available academic books listed by students.</p></div></section>
+<form class="search-panel" method="get">
+    <label>Book name<input type="search" name="book_name" value="{{ request.args.get('book_name', '') }}" placeholder="Search title"></label>
+    <label>Author<input type="search" name="author" value="{{ request.args.get('author', '') }}" placeholder="Search author"></label>
+    <label>Subject<input type="search" name="subject" value="{{ request.args.get('subject', '') }}" placeholder="Search subject"></label>
+    <label>Class<input type="search" name="book_class" value="{{ request.args.get('book_class', '') }}" placeholder="For example, 12"></label>
+    <label>Condition<select name="book_condition"><option value="">Any</option><option {% if request.args.get('book_condition') == 'New' %}selected{% endif %}>New</option><option {% if request.args.get('book_condition') == 'Good' %}selected{% endif %}>Good</option><option {% if request.args.get('book_condition') == 'Used' %}selected{% endif %}>Used</option></select></label>
+    <div class="search-actions"><button class="button button-small" type="submit">Search</button><a class="button button-light button-small" href="{{ url_for('browse_books') }}">Clear</a></div>
+</form>
+<p class="results-note">{{ books|length }} available book(s)</p>
+{% if books %}
+<div class="book-grid">
+    {% for book in books %}
+    <article class="book-card">
+        <img class="book-cover" src="{{ url_for('static', filename='images/default-book.svg') }}" alt="Default book cover">
+        <div class="book-info"><span class="tag">{{ book.exchange_type }}</span><h3>{{ book.book_name }}</h3><p class="muted">by {{ book.author }}</p><p><strong>{{ book.subject }}</strong> · Class {{ book.book_class }}</p><p class="small-line">Condition: {{ book.book_condition }} · Owner: {{ book.owner_name }}</p>
+            {% if session.get('student_id') %}
+                {% if book.exchange_type == 'Free Donation' %}
+                    <form method="post" action="{{ url_for('open_whatsapp') }}"><input type="hidden" name="action" value="donation"><input type="hidden" name="book_id" value="{{ book.book_id }}"><button class="button button-small" type="submit">Ask about donation on WhatsApp</button></form>
+                {% endif %}
+                <form method="post" action="{{ url_for('request_book', book_id=book.book_id) }}"><button class="button button-light button-small" type="submit">Request this book</button></form>
+            {% else %}
+                <a class="button button-small" href="{{ url_for('login') }}">Log in to request</a>
+            {% endif %}
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% else %}<div class="empty-panel"><h3>No matching books</h3><p>Try a different search or check again later.</p></div>{% endif %}
+{% endblock %}
